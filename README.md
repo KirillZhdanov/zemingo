@@ -1,30 +1,41 @@
-# React + TypeScript + Vite
+# Zemingo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+### Files structure of `src` catalog
+- `api` - contains application requests
+- `assets` - application assets, currently contains only images
+- `pages` - application pages
+- `router` - application routing
+- `shared` - application reusable components
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Styling
 
-## Expanding the ESLint configuration
+We use a base `TailwindCSS` config for styling in this application
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### API Handling
 
-- Configure the top-level `parserOptions` property like this:
+For handling API calls, we use `axios` for making HTTP requests and `tanstack/react-query`'s `useQuery` and `useMutation` hooks for managing server state and caching.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- **axios**: Promise based HTTP client for the browser and node.js
+- **@tanstack/react-query**: A powerful data fetching and state management library for React, which is used here for fetching data with help of `useQuery` and `useMutation` for creating, updating, or deleting data.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+### Linter and Formatter
+
+#### ESLint
+`ESLint` is used to lint TypeScript and TypeScript React files, ensuring code quality and adherence to coding standards.
+
+#### Prettier
+`Prettier` is a code formatter that enforces a consistent code style
+
+
+### Available Scripts
+
+#### In the project directory, you can run the following scripts:
+
+- `npm run dev`: Runs Vite for development
+- `npm run build`: Compiles TypeScript using tsc and then builds the application using Vite for production
+- `npm run lint`: Lints the project using ESLint, checking TypeScript and TypeScript React files with no warnings
+- `npm run lint:fix`: Lints the project using ESLint, checking TypeScript and TypeScript React files with no warnings and fixing issues that is able to fix
+- `npm run preview`: Runs Vite in preview mode
+- `npm run typecheck`: Runs TypeScript type checking without emitting any files

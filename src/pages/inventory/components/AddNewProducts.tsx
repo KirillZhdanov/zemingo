@@ -6,6 +6,8 @@ import { InventoryItem } from "../hooks/useInventory";
 import { addInventoryItem } from "../../../api/inventoryApi";
 import { Button } from "../../../shared/Button";
 import { useRef } from "react";
+import { Notification } from "../../../shared/Notification";
+import errorLogo from "../../../assets/error.svg";
 
 interface AddNewProductsProps {
   inventory: InventoryItem[];
@@ -23,7 +25,7 @@ export function AddNewProducts({
 
   const options = products?.map(({ name }) => ({ value: name, label: name }));
 
-  const { mutate: handleAdd } = useMutation({
+  const { mutate: handleAdd, isError } = useMutation({
     mutationFn: addInventoryItem,
     onSuccess: () => {
       selectRef.current?.clearValue();
@@ -66,6 +68,13 @@ export function AddNewProducts({
         <h2 className="text-xl font-semibold">
           Add new products to the inventory
         </h2>
+        {isError && (
+          <Notification
+            text="Error adding product to inventory"
+            variant="error"
+            icon={<img src={errorLogo} alt="Error logo" />}
+          />
+        )}
         <Select
           ref={selectRef}
           className="basic-single"
