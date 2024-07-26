@@ -7,12 +7,10 @@ export interface InventoryItem {
 }
 
 export function useInventory() {
+  const baseUrl = import.meta.env.VITE_API_URL;
 
   return useQuery<InventoryItem[]>({
     queryKey: ["inventory"],
-    queryFn: () =>
-      axios
-        .get('http://184.73.145.4:8085' + "/inventory")
-        .then(({ data }) => data),
+    queryFn: () => axios.get(`${baseUrl}/inventory`).then(({ data }) => data),
   });
 }

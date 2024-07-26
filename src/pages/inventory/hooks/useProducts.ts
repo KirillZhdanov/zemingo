@@ -6,11 +6,10 @@ interface Product {
 }
 
 export function useProducts() {
+  const baseUrl = import.meta.env.VITE_API_URL;
+
   return useQuery<Product[]>({
     queryKey: ["products"],
-    queryFn: () =>
-      axios
-        .get("http://184.73.145.4:8085" + "/product/all")
-        .then(({ data }) => data),
+    queryFn: () => axios.get(`${baseUrl}/product/all`).then(({ data }) => data),
   });
 }

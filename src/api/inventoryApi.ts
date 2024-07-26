@@ -12,8 +12,10 @@ export async function addInventoryItem({
   quantity,
   inventory,
 }: AddInventoryItemProps) {
+  const baseUrl = import.meta.env.VITE_API_URL;
+
   return axios
-    .post("http://184.73.145.4:8085" + "/inventory", [
+    .post(`${baseUrl}/inventory`, [
       ...inventory,
       {
         name: productName,
