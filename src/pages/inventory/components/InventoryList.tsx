@@ -1,5 +1,5 @@
 import { Box } from "../../../shared/Box";
-import { InventoryItem } from "../hooks/useInventory";
+import { InventoryItem } from "../../../types/interface";
 
 interface InventoryListProps {
   inventory: InventoryItem[];

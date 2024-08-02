@@ -1,21 +1,21 @@
 import { Box } from "../../shared/Box";
-import { useInventory } from "./hooks/useInventory";
 import { AddNewProducts } from "./components/AddNewProducts";
 import { PRODUCT_ROUTE } from "../../router/routes";
 import { Link } from "react-router-dom";
 import { InventoryList } from "./components/InventoryList";
+import { useInventoryStore } from "../../store/useInventoryStore";
+import { useEffect } from "react";
 
 export function Inventory() {
-  const { data = [], refetch } = useInventory();
+  const { inventory, handleFetchInventory } = useInventoryStore();
 
-  const inventoryArray = Array.from(data);
+  useEffect(() => {
+    handleFetchInventory();
+  }, [handleFetchInventory]);
 
   return (
     <Box className="m-4 flex flex-col gap-6 max-w-3xl mx-auto">
-      <AddNewProducts
-        inventory={inventoryArray}
-        handleRefetchInventory={refetch}
-      />
+      <AddNewProducts inventory={inventory} />
 
       <Link
         to={PRODUCT_ROUTE}
@@ -24,7 +24,7 @@ export function Inventory() {
         Add a new product
       </Link>
 
-      <InventoryList inventory={inventoryArray} />
+      <InventoryList inventory={inventory} />
     </Box>
   );
 }

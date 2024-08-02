@@ -9,3 +9,10 @@ export async function createProduct(productName: string) {
     })
     .then(({ data }) => data);
 }
+
+
+export async function fetchProducts() {
+  const baseUrl = import.meta.env.VITE_API_URL;
+
+  return axios.get(`${baseUrl}/product/all`).then(({ data }) => data);
+}

@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
 import { Box } from "../../../shared/Box";
-import { createProduct } from "../../../api/productsApi";
 import { Button } from "../../../shared/Button";
 import { INVENTORY_ROUTE } from "../../../router/routes";
+import { useProductsStore } from "../../../store/useProductsStore";
 
 export function CreateNewProducts() {
   const navigate = useNavigate();
+
+  const { handleCreateProduct } = useProductsStore();
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,18 +18,16 @@ export function CreateNewProducts() {
       return;
     }
 
-    handleCreateProduct(productName);
+    handleCreateProduct({
+      newProduct: productName,
+      onSuccess: () => {
+        navigate(INVENTORY_ROUTE);
+      },
+      onError: () => {
+        console.error("Error creating new product");
+      },
+    });
   };
-
-  const { mutate: handleCreateProduct } = useMutation({
-    mutationFn: createProduct,
-    onSuccess: () => {
-      navigate(INVENTORY_ROUTE);
-    },
-    onError: () => {
-      console.error("Error creating new product");
-    },
-  });
 
   return (
     <form onSubmit={handleFormSubmit}>

@@ -1,7 +1,8 @@
 import axios from "axios";
-import { InventoryItem } from "../pages/inventory/hooks/useInventory";
 
-interface AddInventoryItemProps {
+import type { InventoryItem } from "../types/interface";
+
+export interface AddInventoryItemParams {
   productName: string;
   quantity: number;
   inventory: InventoryItem[];
@@ -11,7 +12,7 @@ export async function addInventoryItem({
   productName,
   quantity,
   inventory,
-}: AddInventoryItemProps) {
+}: AddInventoryItemParams) {
   const baseUrl = import.meta.env.VITE_API_URL;
 
   return axios
@@ -23,4 +24,10 @@ export async function addInventoryItem({
       },
     ])
     .then(({ data }) => data);
+}
+
+export async function fetchInventory() {
+  const baseUrl = import.meta.env.VITE_API_URL;
+
+  return axios.get(`${baseUrl}/inventory`).then(({ data }) => data);
 }
