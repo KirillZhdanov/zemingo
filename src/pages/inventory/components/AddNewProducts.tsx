@@ -1,41 +1,30 @@
 import Select, { SelectInstance } from "react-select";
 import { Box } from "../../../shared/Box";
-import { useProducts } from "../hooks/useProducts";
-import { useMutation } from "@tanstack/react-query";
-import { InventoryItem } from "../hooks/useInventory";
-import { addInventoryItem } from "../../../api/inventoryApi";
 import { Button } from "../../../shared/Button";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Notification } from "../../../shared/Notification";
 import errorLogo from "../../../assets/error.svg";
+import { useProductsStore } from "../../../store/useProductsStore";
+import { InventoryItem } from "../../../types/interface";
+import { useInventoryStore } from "../../../store/useInventoryStore";
 
 interface AddNewProductsProps {
   inventory: InventoryItem[];
-  handleRefetchInventory: () => void;
 }
 
-export function AddNewProducts({
-  inventory,
-  handleRefetchInventory,
-}: AddNewProductsProps) {
+export function AddNewProducts({ inventory }: AddNewProductsProps) {
   const selectRef = useRef<SelectInstance>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const { data: products, isLoading } = useProducts();
+  const { isError, handleAddInventory } = useInventoryStore();
+
+  const { products, isLoading, handleFetchProducts } = useProductsStore();
+
+  useEffect(() => {
+    handleFetchProducts();
+  }, [handleFetchProducts]);
 
   const options = products?.map(({ name }) => ({ value: name, label: name }));
-
-  const { mutate: handleAdd, isError } = useMutation({
-    mutationFn: addInventoryItem,
-    onSuccess: () => {
-      selectRef.current?.clearValue();
-      formRef.current?.reset();
-      handleRefetchInventory();
-    },
-    onError: () => {
-      console.error("Error adding product to inventory");
-    },
-  });
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,10 +40,17 @@ export function AddNewProducts({
       (item) => item.name !== productName
     );
 
-    handleAdd({
+    handleAddInventory({
       productName,
       quantity: Number(quantity),
       inventory: filteredInventory,
+      onSuccess: () => {
+        selectRef.current?.clearValue();
+        formRef.current?.reset();
+      },
+      onError: () => {
+        console.error("Error adding product to inventory");
+      },
     });
   };
 
